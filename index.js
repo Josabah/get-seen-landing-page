@@ -44,7 +44,7 @@ form.addEventListener("submit", async (event) => {
 
   try {
     const payload = { email: input.value.trim().toLowerCase() };
-    const response = await fetch("http://localhost:3001/subscribe", {
+    const response = await fetch("http://localhost:3000/subscribe", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
