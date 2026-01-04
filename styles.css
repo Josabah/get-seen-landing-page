@@ -1,0 +1,137 @@
+/* System font stack */
+:root {
+  --bg-start: #121628; /* deep navy */
+  --bg-end: #121628; /* solid by default; can be subtle gradient */
+  --text-primary: hsl(0, 0%, 100%); /* near-white */
+  --text-secondary: #f5f1f1;
+  --accent: #6d5df6; /* blue-violet */
+  --accent-strong: #5a48f3;
+  --accent-dark: #4a3ae9;
+  --focus: #f7f7f7; /* electric blue */
+  --surface: #121833;
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-focus: 0 0 0 3px rgba(47, 124, 240, 0.5);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, system-ui, sans-serif;
+  color: var(--text-primary);
+  background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+/* Typography hierarchy */
+h1 {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 800; /* bold, prominent */
+  line-height: 1.1; /* tight but readable */
+  letter-spacing: -0.01em;
+  margin: 100px 0 16px;
+}
+
+p {
+    text-align: center;
+  font-size: clamp(1rem, 2.4vw, 1.125rem);
+  line-height: 1.6; /* comfortable */
+  color: var(--text-secondary);
+  margin: 10px 10px 16px;
+}
+
+small { color: #9fb0cc; }
+
+/* Form layout */
+form {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 12px;
+  align-items: center;
+  margin: 60px 0 100px;
+  padding: 10px 100px 20px;
+  background-color: #1a203a;
+    border-radius: 8px;
+}
+
+label {
+  grid-column: 1 / -1;
+  font-size: 0.95rem;
+  color: #c6c6d5;
+}
+
+input[type="email"] {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #0e1428;
+  color: var(--text-primary);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset; /* restrained depth */
+}
+
+input::placeholder { color: #8fa0bd; }
+
+/* Primary CTA button */
+button.primary-cta {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  padding: 14px 20px;
+  font-weight: 600; /* medium weight */
+  letter-spacing: 0.02em; /* slight */
+  color: #fff;
+  background: #2F39BA;
+  border-radius: 9px; /* pill-like */
+  box-shadow: 0 6px 16px rgba(8, 5, 50, 0.727); /* soft, restrained */
+  transition: box-shadow 120ms ease, transform 120ms ease, background 120ms ease;
+}
+
+button.primary-cta:hover {
+  background: #272fc6;
+  box-shadow: 0 8px 20px rgba(13, 12, 37, 0.45);
+}
+
+button.primary-cta:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px rgba(93, 82, 235, 0.35);
+}
+
+button.primary-cta:disabled,
+button.primary-cta[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+/* Focus & selection (accessible) */
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-focus);
+}
+
+::selection {
+  background: rgba(89, 152, 246, 0.4);
+  color: #fff;
+}
+
+/* Mobile adjustments */
+@media (max-width: 560px) {
+  form { grid-template-columns: 1fr; }
+  button.primary-cta { width: 100%; }
+}
