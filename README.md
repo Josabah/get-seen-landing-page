@@ -1,4 +1,4 @@
-A simple landing page. 
+## A simple landing page. 
 
 This is the simplest fullstack app one can build. 
 
