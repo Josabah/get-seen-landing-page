@@ -1,22 +1,28 @@
 const form = document.querySelector("form");
 const input = document.querySelector("#email");
 const button = form.querySelector("button");
-
-// Create or get a status region for messages
-let statusEl = document.querySelector('#status');
-if (!statusEl) {
-  statusEl = document.createElement('div');
-  statusEl.id = 'status';
-  statusEl.setAttribute('role', 'status');
-  statusEl.setAttribute('aria-live', 'polite');
-  statusEl.style.marginTop = '8px';
-  form.appendChild(statusEl);
-}
+const statusEl = document.querySelector("#status");
+const successMessageEl = document.querySelector("#success-message");
 
 let state = "idle";
 
+function showForm() {
+  form.style.display = "";
+  successMessageEl.classList.add("hidden");
+  successMessageEl.textContent = "";
+  statusEl.textContent = "";
+}
+
+function showSuccess(message) {
+  form.style.display = "none";
+  successMessageEl.textContent = message;
+  successMessageEl.classList.remove("hidden");
+  statusEl.textContent = "";
+}
+
 function setState(nextState, message = "") {
   state = nextState;
+  button.classList.toggle("is-loading", state === "submitting");
 
   switch (state) {
     case "idle":
@@ -33,11 +39,7 @@ function setState(nextState, message = "") {
       break;
 
     case "success":
-      // Replace form content with a clear confirmation
-      form.innerHTML = `
-        <h2 style="margin:0 0 8px; font-size:1.25rem; font-weight:700; color: var(--text-primary)">You're in! Thanks for subscribing.</h2>
-      `;
-      
+      showSuccess(message || "You're in! Thanks for subscribing.");
       break;
 
     case "error":
@@ -56,12 +58,13 @@ input.addEventListener("input", () => {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  console.log("Submitting form...");
   setState("submitting");
 
+  const apiBase = window.API_BASE ?? "";
+  const payload = { email: input.value.trim().toLowerCase() };
+
   try {
-    const payload = { email: input.value.trim().toLowerCase() };
-    const response = await fetch("http://localhost:3000/subscribe", {
+    const response = await fetch(`${apiBase}/subscribe`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
@@ -70,21 +73,20 @@ form.addEventListener("submit", async (event) => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      // Invalid email or server error
-      const msg = data?.error === 'Invalid email' ? 'Please enter a valid email address.' : (data.error || 'Request failed');
+      const msg =
+        data?.error === "Invalid email"
+          ? "Please enter a valid email address."
+          : (data.error || "Request failed");
       throw new Error(msg);
     }
 
-    // Handle success and special cases
-    if (data.message === "Already subscribed") {
-      // Non-blocking success with info
-      statusEl.textContent = "You're already subscribed with this email.";
-    }
-
-    setState("success");
+    const successMsg =
+      data.message === "Already subscribed"
+        ? "You're already subscribed with this email."
+        : "You're in! Thanks for subscribing.";
+    setState("success", successMsg);
   } catch (err) {
     console.error(err);
     setState("error", err.message);
   }
 });
-

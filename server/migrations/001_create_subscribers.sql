@@ -2,5 +2,5 @@ CREATE TABLE IF NOT EXISTS subscribers (
   id SERIAL PRIMARY KEY,
   email TEXT NOT NULL UNIQUE,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-  status TEXT NOT NULL
+  status TEXT NOT NULL CHECK (status IN ('subscribed', 'unsubscribed'))
 );

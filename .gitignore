@@ -1,6 +1,11 @@
 # dependencies
 node_modules/
 
+# macOS
+.DS_Store
+
+# editor / local tooling (not for GitHub)
+.cursor/
 
 # environment variables
 .env

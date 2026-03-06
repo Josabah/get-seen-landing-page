@@ -4,10 +4,11 @@
   --bg-end: #121628; /* solid by default; can be subtle gradient */
   --text-primary: hsl(0, 0%, 100%); /* near-white */
   --text-secondary: #f5f1f1;
-  --accent: #6d5df6; /* blue-violet */
-  --accent-strong: #5a48f3;
-  --accent-dark: #4a3ae9;
-  --focus: #f7f7f7; /* electric blue */
+  --accent: #4f9cf9; /* electric blue */
+  --accent-strong: #3b82f6;
+  --accent-dark: #2563eb;
+  --success: #22c55e;
+  --focus: #f7f7f7; /* focus ring (light) */
   --surface: #121833;
   --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
   --shadow-focus: 0 0 0 3px rgba(47, 124, 240, 0.5);
@@ -46,25 +47,50 @@ h1 {
 }
 
 p {
-    text-align: center;
+  text-align: center;
   font-size: clamp(1rem, 2.4vw, 1.125rem);
-  line-height: 1.6; /* comfortable */
+  line-height: 1.6;
   color: var(--text-secondary);
   margin: 10px 10px 16px;
 }
 
+p.lead {
+  max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 small { color: #9fb0cc; }
 
-/* Form layout */
+.hidden { display: none; }
+
+#status, #success-message {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+#success-message {
+  margin: 60px 0 100px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Form layout – floating container with depth */
 form {
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 1fr auto;
   gap: 12px;
   align-items: center;
   margin: 60px 0 100px;
-  padding: 10px 100px 20px;
+  padding: 16px 24px 20px;
+  width: 100%;
+  max-width: 560px;
   background-color: #1a203a;
-    border-radius: 8px;
+  border-radius: 8px;
+  border: 1px solid #ffffff10;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 label {
@@ -91,13 +117,17 @@ button.primary-cta {
   border: none;
   cursor: pointer;
   padding: 14px 20px;
-  font-weight: 600; /* medium weight */
-  letter-spacing: 0.02em; /* slight */
+  font-weight: 600;
+  letter-spacing: 0.02em;
   color: #fff;
   background: #2F39BA;
-  border-radius: 9px; /* pill-like */
-  box-shadow: 0 6px 16px rgba(8, 5, 50, 0.727); /* soft, restrained */
-  transition: box-shadow 120ms ease, transform 120ms ease, background 120ms ease;
+  border-radius: 9px;
+  box-shadow: 0 6px 16px rgba(8, 5, 50, 0.45);
+  transition: box-shadow 120ms ease, background 120ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 button.primary-cta:hover {
@@ -117,12 +147,33 @@ button.primary-cta[disabled] {
   box-shadow: none;
 }
 
-/* Focus & selection (accessible) */
+button.primary-cta .primary-cta__spinner {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+button.primary-cta.is-loading .primary-cta__text {
+  display: none;
+}
+
+button.primary-cta.is-loading .primary-cta__spinner {
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Focus & selection (accessible, minimal so input doesn’t feel big) */
 input:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
-  box-shadow: var(--shadow-focus);
+  outline: 1px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 1px;
 }
 
 ::selection {
